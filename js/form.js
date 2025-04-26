@@ -8,32 +8,61 @@ form.addEventListener('submit', (e) => {
     const email = document.getElementById('correo').value
     const password = document.getElementById('password').value
    
-    const errorNombre = document.getElementById("errorUsuario")
-    
+    const errorNombre = document.getElementById('errorNombre');
+    const errorEdad = document.getElementById('errorEdad');
+    const errorCorreo = document.getElementById('errorCorreo');
+    const errorPassword = document.getElementById('errorPassword');
+    const mensaje = document.getElementById('mensaje');
+
+    const datoNombre = document.getElementById('datoNombre');
+    const datoEdad = document.getElementById('datoEdad');
+    const datoEmail = document.getElementById('datoEmail');
+
+    errorNombre.innerText = '';
+    errorEdad.innerText = '';
+    errorCorreo.innerText = '';
+    errorPassword.innerText = '';
+    mensaje.innerText = '';
+    datoNombre.textContent = '';
+    datoEdad.textContent = '';
+    datoEmail.textContent = '';
+
+
+    function mostrarError(errorElemento, mensaje) {
+        errorElemento.textContent = mensaje;
+        errorElemento.style.color = 'red';
+        errorElemento.style.fontWeight = 'bold';
+        errorElemento.style.fontSize = '15px';
+    }
+    var hayError = false
+
     if (nombre === '') {
-        errorNombre.innerText = 'El nombre de usuario es requerido'
-        errorNombre.style.color = 'red'
-        errorNombre.style.fontWeight = 'bold'
-        errorNombre.style.fontSize = '15px'
-        document.getElementById("mensaje").innerText = ''
-    } else if (edad < 18) {
-        document.getElementById("errorEdad").innerText = 'La edad debe ser mayor a 18'
-        document.getElementById("mensaje").innerText = ''
-    } else if (email === ''){
-        document.getElementById("errorCorreo").innerText = 'El email es requerido'
-        document.getElementById("mensaje").innerText = ''
-
-    } else if (password <=6){
-        document.getElementById("errorConstraseña").innerText = 'La contraseña debe ser mayor de seis caracteres'
-        document.getElementById("mensaje").innerText = ''
-        
+        mostrarError(errorNombre, 'El nombre de usuario es requerido');
+        hayError = true;
     }
-    else {
-        document.getElementById("errorNombre").innerText = ''
-        document.getElementById("errorEdad").innerText = 0
-        document.getElementById("errorCorreo").innerText = ''
-        document.getElementById("mensaje").innerText = `Bienvenido ${usuario}`
-    }
-    
 
-})
+    if (edad < 18 || edad === null) {
+        mostrarError(errorEdad, 'La edad debe ser mayor o igual a 18');
+        hayError = true;
+    }
+
+    if (email === '') {
+        mostrarError(errorCorreo, 'El correo debe ser formato válido');
+        hayError = true;
+    }
+
+    if (password.length < 6) {
+        mostrarError(errorPassword, 'La contraseña debe tener al menos 6 caracteres');
+        hayError = true;
+    }
+
+    if (!hayError) {
+        mensaje.innerText = `🎉 ¡Registro exitoso! Bienvenido, ${nombre}.`;
+        mensaje.style.color = 'green';
+        datoNombre.textContent = `Nombre: ${nombre}`;
+        datoEdad.textContent = `Edad: ${edad}`;
+        datoEmail.textContent = `Email: ${email}`;
+        form.reset();
+    }
+});
+  
